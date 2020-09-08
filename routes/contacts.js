@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 // @desc		Add new contact
 // @access 	Private
 router.post('/', (req, res) => {
-  res.send('Add contact');
+  res.send('Add contacts');
 });
 
 // @route		PUT api/contacts/:id
