@@ -1,8 +1,23 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import ContactContext from '../../context/contact/contactContext';
+import { set } from 'mongoose';
 
 const ContactForm = () => {
   const contactContext = useContext(ContactContext);
+  const { addContact, clearCurrent, current } = contactContext;
+
+  useEffect(() => {
+    if (current !== null) {
+      setContact(current);
+    } else {
+      setContact({
+        name: '',
+        email: '',
+        phone: '',
+        type: 'personal',
+      });
+    }
+  }, [contactContext, current]);
 
   const [contact, setContact] = useState({
     name: '',
@@ -19,8 +34,7 @@ const ContactForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log('shit');
-    contactContext.addContact(contact);
+    addContact(contact);
     setContact({
       name: '',
       email: '',
@@ -29,12 +43,16 @@ const ContactForm = () => {
     });
   };
 
+  const clearAll = () => {
+    clearCurrent();
+  };
+
   return (
     <form onSubmit={onSubmit}>
-      <h2>Add Contact</h2>
+      <h2>{current ? 'Edit Contact' : 'Add Contact'}</h2>
       <input
         type='text'
-        placeholder='name'
+        placeholder='Name'
         name='name'
         value={name}
         onChange={onChange}
@@ -73,10 +91,17 @@ const ContactForm = () => {
       <div>
         <input
           type='submit'
-          value='Add Contact'
+          value={current ? 'Update Contact' : 'Add Contact'}
           className='btn btn-primary btn-block'
         />
       </div>
+      {current && (
+        <div>
+          <button className='btn btn-light btn-block' onClick={clearAll}>
+            Clear
+          </button>
+        </div>
+      )}
     </form>
   );
 };
