@@ -8,18 +8,16 @@ const { check, validationResult } = require('express-validator');
 
 const User = require('../models/User');
 
-// @route		GET api/auth
-// @desc		Get logged in user
-// @access 	Private
+// @route     GET api/auth
+// @desc      Get logged in user
+// @access    Private
 router.get('/', auth, async (req, res) => {
-  // res.send('Get logged in user');
-
   try {
     const user = await User.findById(req.user.id).select('-password');
     res.json(user);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Server error');
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
 });
 
