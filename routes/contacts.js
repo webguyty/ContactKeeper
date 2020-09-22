@@ -16,7 +16,7 @@ router.get('/', auth, async (req, res) => {
     });
     res.json(contacts);
   } catch (error) {
-    console.error(error.message);
+    console.error(error.msg);
     res.status(500).send('Server Error');
   }
 });
